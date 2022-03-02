@@ -7,11 +7,17 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
+      - name: Clean
+        uses: heowc/action-hexo@main
+        with:
+          args: clean
+      - name: Generate
+        uses: heowc/action-hexo@main
+        with:
+          args: generate
 
       - name: Build and Deploy
-        uses: renzhaosy/hexo-deploy-action@master
+        uses: heowc/action-hexo@main
         env:
           PERSONAL_TOKEN: ${{ secrets.ACCESS_TOKEN }}
          # PUBLISH_REPOSITORY: qq9694526/blog # The repository the action should deploy to.
