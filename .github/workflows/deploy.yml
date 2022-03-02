@@ -7,19 +7,13 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Clean
-        uses: heowc/action-hexo@main
+      - uses: actions/checkout@v2
+      # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v1
         with:
-          args: clean
-      - name: Generate
-        uses: heowc/action-hexo@main
-        with:
-          args: generate
-
-      - name: Build and Deploy
-        uses: heowc/action-hexo@main
+          node-version: '12.x'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm install
+      - run: npm publish
         env:
-          PERSONAL_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-         # PUBLISH_REPOSITORY: qq9694526/blog # The repository the action should deploy to.
-          BRANCH: blog  # The branch the action should deploy to.
-          PUBLISH_DIR: ./public # The folder the action should deploy.
+          NODE_AUTH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
